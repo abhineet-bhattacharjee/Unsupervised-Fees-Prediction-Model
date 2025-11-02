@@ -269,3 +269,12 @@ def main():
     print(f"\nBEST MODELS:")
     print(f"{best_clustering['Model']} with {best_clustering['Config']}")
     print(f"{best_reduction['Model']} with {best_reduction['Config']}")
+
+if  __name__ == "__main__":
+    kmeans_clustering()
+    hierarchical_clustering()
+    gaussian_mixture_model()
+    dbscan_clustering()
+    principal_component_analysis()
+    independent_component_analysis()
+    main()
