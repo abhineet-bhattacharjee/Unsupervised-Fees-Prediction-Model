@@ -53,3 +53,21 @@ def train_pca():
 
     joblib.dump(pca, 'models/pca.pkl')
     return pca, X_pca
+
+
+def save_results(kmeans_labels, X_pca):
+    results_df = pd.DataFrame({
+        'Year': df['academic.year'],
+        'Cluster': kmeans_labels,
+        'PC1': X_pca[:, 0],
+        'PC2': X_pca[:, 1],
+        'PC3': X_pca[:, 2]
+    })
+
+    print(f"\nSample Results (first 5 years):")
+    print(results_df.head().to_string(index=False))
+    print("...")
+    print(results_df.tail(3).to_string(index=False))
+
+    return results_df
+
