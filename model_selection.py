@@ -8,6 +8,7 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_har
 import warnings
 import time
 
+
 warnings.filterwarnings('ignore')
 
 RANDOM_STATE = 42
@@ -20,3 +21,5 @@ SCHOOL_COLUMNS = [
 df = pd.read_csv('dataset.csv')
 X = df[SCHOOL_COLUMNS].values
 
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
