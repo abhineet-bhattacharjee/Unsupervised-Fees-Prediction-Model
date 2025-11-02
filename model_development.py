@@ -7,7 +7,7 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_har
 import joblib
 import os
 
-from model_selection import RANDOM_STATE, SCHOOL_COLUMNS, X_scaled
+from model_selection import RANDOM_STATE, SCHOOL_COLUMNS, X_scaled, df, scaler
 
 
 os.makedirs('models', exist_ok=True)
