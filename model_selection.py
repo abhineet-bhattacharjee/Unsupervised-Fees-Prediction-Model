@@ -1,0 +1,11 @@
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
+from sklearn.mixture import GaussianMixture
+from sklearn.decomposition import PCA, FastICA
+from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_harabasz_score
+import warnings
+import time
+
+warnings.filterwarnings('ignore')
