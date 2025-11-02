@@ -97,10 +97,12 @@ def gaussian_mixture_model():
                 gmm.fit(X_scaled)
                 labels = gmm.predict(X_scaled)
 
+                # GMM-specific metrics
                 bic = gmm.bic(X_scaled)
                 aic = gmm.aic(X_scaled)
                 log_likelihood = gmm.score(X_scaled)
 
+                # Clustering metrics (only if unique clusters)
                 if len(np.unique(labels)) > 1:
                     silhouette = silhouette_score(X_scaled, labels)
                     davies_bouldin = davies_bouldin_score(X_scaled, labels)
@@ -109,6 +111,10 @@ def gaussian_mixture_model():
                     davies_bouldin = np.nan
 
                 elapsed = time.time() - start_time
+
+                # Format display strings BEFORE print statement
+                sil_str = f"{silhouette:.4f}" if not np.isnan(silhouette) else "N/A"
+                db_str = f"{davies_bouldin:.4f}" if not np.isnan(davies_bouldin) else "N/A"
 
                 results.append({
                     'Model': 'GMM',
@@ -123,11 +129,13 @@ def gaussian_mixture_model():
                     'Time_sec': round(elapsed, 3)
                 })
 
-                print(
-                    f"n={n_components}, {cov_type}: BIC={bic:.2f}, AIC={aic:.2f}, Sil={silhouette:.4f if not np.isnan(silhouette) else 'N/A'}")
+                # NOW use the pre-formatted strings
+                print(f"n={n_components}, {cov_type}: BIC={bic:.2f}, AIC={aic:.2f}, Sil={sil_str}, DB={db_str}")
 
             except Exception as e:
                 print(f"GMM n={n_components}, cov={cov_type} failed: {str(e)[:50]}")
+
+
 
 def dbscan_clustering():
     eps_values = [0.5, 1.0, 1.5, 2.0, 2.5]
@@ -228,8 +236,13 @@ def independent_component_analysis():
 
 if  __name__ == "__main__":
     kmeans_clustering()
+    print()
     hierarchical_clustering()
+    print()
     gaussian_mixture_model()
+    print()
     dbscan_clustering()
+    print()
     principal_component_analysis()
+    print()
     independent_component_analysis()
