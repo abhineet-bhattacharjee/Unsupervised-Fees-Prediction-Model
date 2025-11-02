@@ -9,3 +9,10 @@ import warnings
 import time
 
 warnings.filterwarnings('ignore')
+
+RANDOM_STATE = 42
+SCHOOL_COLUMNS = [
+    'Business (MBA)', 'Design', 'Divinity', 'Education',
+    'GSAS', 'Government', 'Law', 'Medical/Dental',
+    'Public Health (1-Year MPH)'
+]
