@@ -33,3 +33,23 @@ def train_kmeans():
 
     joblib.dump(kmeans, 'models/kmeans.pkl')
     return kmeans, labels
+
+
+def train_pca():
+    n_components = 3
+    pca = PCA(n_components=n_components)
+    X_pca = pca.fit_transform(X_scaled)
+
+    X_reconstructed = pca.inverse_transform(X_pca)
+    reconstruction_mse = np.mean((X_scaled - X_reconstructed) ** 2)
+    explained_variance = np.sum(pca.explained_variance_ratio_)
+
+    print(f"\nPCA (n={n_components})")
+    print(f"  Variance Explained: {explained_variance:.4%}")
+    print(f"  Reconstruction MSE: {reconstruction_mse:.6f}")
+
+    for i, var in enumerate(pca.explained_variance_ratio_):
+        print(f"  PC{i + 1}: {var:.4%}")
+
+    joblib.dump(pca, 'models/pca.pkl')
+    return pca, X_pca
