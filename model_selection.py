@@ -181,4 +181,30 @@ def dbscan_clustering():
             print(f"  eps={eps}, min={min_samples}: clusters={n_clusters}, noise={n_noise}, Sil={sil_str}")
 
 def principal_component_analysis():
+    for n_components in [2, 3, 4, 5, 6]:
+        start_time = time.time()
 
+        pca = PCA(n_components=n_components)
+        X_pca = pca.fit_transform(X_scaled)
+
+        # Reconstruction error
+        X_reconstructed = pca.inverse_transform(X_pca)
+        reconstruction_mse = np.mean((X_scaled - X_reconstructed) ** 2)
+
+        # Variance explained
+        explained_variance = np.sum(pca.explained_variance_ratio_)
+
+        elapsed = time.time() - start_time
+
+        results.append({
+            'Model': 'PCA',
+            'Config': f'n_components={n_components}',
+            'n_components': n_components,
+            'Reconstruction_MSE': round(reconstruction_mse, 6),
+            'Variance_Explained': round(explained_variance, 4),
+            'Component_Variance': [round(v, 4) for v in pca.explained_variance_ratio_],
+            'Time_sec': round(elapsed, 3)
+        })
+
+        print(
+            f"  n={n_components}: MSE={reconstruction_mse:.6f}, Variance={explained_variance:.2%}, Time={elapsed:.3f}s")
