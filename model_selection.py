@@ -131,4 +131,6 @@ def gaussian_mixture_model():
             except Exception as e:
                 print(f"  ⚠ GMM n={n_components}, cov={cov_type} failed: {str(e)[:50]}")
 
+def dbscan_clustering():
+
 
