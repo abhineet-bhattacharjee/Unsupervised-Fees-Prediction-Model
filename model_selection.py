@@ -54,3 +54,30 @@ def kmeans_clustering():
         print(f"k={n_clusters}: Silhouette={silhouette:.4f}, DB={davies_bouldin:.4f}, CH={calinski:.2f}, Time={elapsed:.2f}s")
 
 def hierarchical_clustering():
+    linkage_methods = ['ward', 'complete', 'average', 'single']
+    for n_clusters in [2, 3, 4, 5]:
+        for linkage in linkage_methods:
+            start_time = time.time()
+
+            agg = AgglomerativeClustering(n_clusters=n_clusters, linkage=linkage)
+            labels = agg.fit_predict(X_scaled)
+
+            silhouette = silhouette_score(X_scaled, labels)
+            davies_bouldin = davies_bouldin_score(X_scaled, labels)
+            calinski = calinski_harabasz_score(X_scaled, labels)
+
+            elapsed = time.time() - start_time
+
+            results.append({
+                'Model': 'Hierarchical',
+                'Config': f'n={n_clusters}, link={linkage}',
+                'n_clusters': n_clusters,
+                'linkage': linkage,
+                'Silhouette': round(silhouette, 4),
+                'Davies_Bouldin': round(davies_bouldin, 4),
+                'Calinski_Harabasz': round(calinski, 2),
+                'Time_sec': round(elapsed, 3)
+            })
+
+            print(f"  n={n_clusters}, {linkage}: Silhouette={silhouette:.4f}, DB={davies_bouldin:.4f}")
+
