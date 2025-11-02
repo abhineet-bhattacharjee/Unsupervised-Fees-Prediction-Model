@@ -81,3 +81,4 @@ def hierarchical_clustering():
 
             print(f"  n={n_clusters}, {linkage}: Silhouette={silhouette:.4f}, DB={davies_bouldin:.4f}")
 
+def gaussian_mixture_model():
