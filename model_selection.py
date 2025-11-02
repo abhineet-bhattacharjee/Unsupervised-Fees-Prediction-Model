@@ -82,3 +82,53 @@ def hierarchical_clustering():
             print(f"  n={n_clusters}, {linkage}: Silhouette={silhouette:.4f}, DB={davies_bouldin:.4f}")
 
 def gaussian_mixture_model():
+    covariance_types = ['full', 'tied', 'diag', 'spherical']
+    for n_components in [2, 3, 4, 5]:
+        for cov_type in covariance_types:
+            start_time = time.time()
+
+            try:
+                gmm = GaussianMixture(
+                    n_components=n_components,
+                    covariance_type=cov_type,
+                    random_state=RANDOM_STATE,
+                    max_iter=200
+                )
+                gmm.fit(X_scaled)
+                labels = gmm.predict(X_scaled)
+
+                # GMM-specific metrics
+                bic = gmm.bic(X_scaled)
+                aic = gmm.aic(X_scaled)
+                log_likelihood = gmm.score(X_scaled)
+
+                # Clustering metrics (only if unique clusters)
+                if len(np.unique(labels)) > 1:
+                    silhouette = silhouette_score(X_scaled, labels)
+                    davies_bouldin = davies_bouldin_score(X_scaled, labels)
+                else:
+                    silhouette = np.nan
+                    davies_bouldin = np.nan
+
+                elapsed = time.time() - start_time
+
+                results.append({
+                    'Model': 'GMM',
+                    'Config': f'n={n_components}, cov={cov_type}',
+                    'n_components': n_components,
+                    'covariance': cov_type,
+                    'Silhouette': round(silhouette, 4) if not np.isnan(silhouette) else None,
+                    'Davies_Bouldin': round(davies_bouldin, 4) if not np.isnan(davies_bouldin) else None,
+                    'BIC': round(bic, 2),
+                    'AIC': round(aic, 2),
+                    'LogLikelihood': round(log_likelihood, 4),
+                    'Time_sec': round(elapsed, 3)
+                })
+
+                print(
+                    f"  n={n_components}, {cov_type}: BIC={bic:.2f}, AIC={aic:.2f}, Sil={silhouette:.4f if not np.isnan(silhouette) else 'N/A'}")
+
+            except Exception as e:
+                print(f"  ⚠ GMM n={n_components}, cov={cov_type} failed: {str(e)[:50]}")
+
+
