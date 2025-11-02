@@ -16,3 +16,7 @@ SCHOOL_COLUMNS = [
     'GSAS', 'Government', 'Law', 'Medical/Dental',
     'Public Health (1-Year MPH)'
 ]
+
+df = pd.read_csv('dataset.csv')
+X = df[SCHOOL_COLUMNS].values
+
