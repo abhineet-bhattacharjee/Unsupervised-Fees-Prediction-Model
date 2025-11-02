@@ -132,5 +132,53 @@ def gaussian_mixture_model():
                 print(f"  ⚠ GMM n={n_components}, cov={cov_type} failed: {str(e)[:50]}")
 
 def dbscan_clustering():
+    eps_values = [0.5, 1.0, 1.5, 2.0, 2.5]
+    min_samples_values = [2, 3, 4, 5]
 
+    for eps in eps_values:
+        for min_samples in min_samples_values:
+            start_time = time.time()
+
+            dbscan = DBSCAN(eps=eps, min_samples=min_samples)
+            labels = dbscan.fit_predict(X_scaled)
+
+            n_clusters = len(set(labels)) - (1 if -1 in labels else 0)
+            n_noise = list(labels).count(-1)
+
+            elapsed = time.time() - start_time
+
+            # Only compute metrics if we have valid clusters
+            if n_clusters > 1 and n_noise < len(labels):
+                # Remove noise points for metric calculation
+                mask = labels != -1
+                if np.sum(mask) > 1:
+                    try:
+                        silhouette = silhouette_score(X_scaled[mask], labels[mask])
+                        davies_bouldin = davies_bouldin_score(X_scaled[mask], labels[mask])
+                    except:
+                        silhouette = np.nan
+                        davies_bouldin = np.nan
+                else:
+                    silhouette = np.nan
+                    davies_bouldin = np.nan
+            else:
+                silhouette = np.nan
+                davies_bouldin = np.nan
+
+            results.append({
+                'Model': 'DBSCAN',
+                'Config': f'eps={eps}, min={min_samples}',
+                'eps': eps,
+                'min_samples': min_samples,
+                'n_clusters': n_clusters,
+                'n_noise': n_noise,
+                'Silhouette': round(silhouette, 4) if not np.isnan(silhouette) else None,
+                'Davies_Bouldin': round(davies_bouldin, 4) if not np.isnan(davies_bouldin) else None,
+                'Time_sec': round(elapsed, 3)
+            })
+
+            sil_str = f"{silhouette:.4f}" if not np.isnan(silhouette) else "N/A"
+            print(f"  eps={eps}, min={min_samples}: clusters={n_clusters}, noise={n_noise}, Sil={sil_str}")
+
+def principal_component_analysis():
 
