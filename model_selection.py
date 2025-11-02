@@ -209,3 +209,24 @@ def principal_component_analysis():
         print(f"n={n_components}: MSE={reconstruction_mse:.6f}, Variance={explained_variance:.2%}, Time={elapsed:.3f}s")
 
 def independent_component_analysis():
+    for n_components in [2, 3, 4, 5]:
+        start_time = time.time()
+
+        ica = FastICA(n_components=n_components, random_state=RANDOM_STATE, max_iter=500)
+        X_ica = ica.fit_transform(X_scaled)
+
+        # Reconstruction
+        X_reconstructed = ica.inverse_transform(X_ica)
+        reconstruction_mse = np.mean((X_scaled - X_reconstructed) ** 2)
+
+        elapsed = time.time() - start_time
+
+        results.append({
+            'Model': 'ICA',
+            'Config': f'n_components={n_components}',
+            'n_components': n_components,
+            'Reconstruction_MSE': round(reconstruction_mse, 6),
+            'Time_sec': round(elapsed, 3)
+        })
+
+        print(f"n={n_components}: MSE={reconstruction_mse:.6f}, Time={elapsed:.3f}s")
