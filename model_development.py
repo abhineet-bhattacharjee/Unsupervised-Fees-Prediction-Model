@@ -7,3 +7,9 @@ from sklearn.metrics import silhouette_score, davies_bouldin_score, calinski_har
 import joblib
 import os
 
+from model_selection import RANDOM_STATE, SCHOOL_COLUMNS, X_scaled
+
+
+os.makedirs('models', exist_ok=True)
+
+def train_kmeans():
