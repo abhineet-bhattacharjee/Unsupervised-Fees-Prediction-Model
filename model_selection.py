@@ -53,3 +53,4 @@ def kmeans_clustering():
 
         print(f"k={n_clusters}: Silhouette={silhouette:.4f}, DB={davies_bouldin:.4f}, CH={calinski:.2f}, Time={elapsed:.2f}s")
 
+def hierarchical_clustering():
