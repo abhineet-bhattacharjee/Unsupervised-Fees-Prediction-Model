@@ -23,3 +23,8 @@ X = df[SCHOOL_COLUMNS].values
 
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
+
+results = []
+
+def kmeans_clustering():
+    pass
