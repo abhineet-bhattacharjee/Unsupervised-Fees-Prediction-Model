@@ -71,3 +71,23 @@ def save_results(kmeans_labels, X_pca):
 
     return results_df
 
+
+if __name__ == "__main__":
+    print("Training K-Means Clustering...")
+    kmeans, kmeans_labels = train_kmeans()
+
+    print()
+
+    print("Training PCA Dimensionality Reduction...")
+    pca, X_pca = train_pca()
+
+    print()
+
+    results_df = save_results(kmeans_labels, X_pca)
+
+    joblib.dump(scaler, 'models/scaler.pkl')
+
+    print(f"\nModels saved:")
+    print("models/kmeans.pkl")
+    print("models/pca.pkl")
+    print("models/scaler.pkl")
