@@ -225,50 +225,6 @@ def independent_component_analysis():
         print(f"n={n_components}: MSE={reconstruction_mse:.6f}, Time={elapsed:.3f}s")
 
 
-def main():
-    results_df = pd.DataFrame(results)
-
-    print("BEST CLUSTERING MODEL - By Silhouette Score")
-
-    clustering_results = results_df[results_df['Model'].isin(['K-Means', 'Hierarchical', 'GMM', 'DBSCAN'])].copy()
-    clustering_results = clustering_results.dropna(subset=['Silhouette'])
-    clustering_results = clustering_results.sort_values('Silhouette', ascending=False)
-    best_clustering = clustering_results.iloc[0]
-
-    print(f"\n{best_clustering['Model']} - {best_clustering['Config']}")
-    print(f"\nSilhouette Score:    {best_clustering['Silhouette']:.4f} (higher is better)")
-    print(f"Davies-Bouldin:      {best_clustering['Davies_Bouldin']:.4f} (lower is better)")
-    if 'Calinski_Harabasz' in best_clustering and best_clustering['Calinski_Harabasz']:
-        print(f"Calinski-Harabasz:   {best_clustering['Calinski_Harabasz']:.2f} (higher is better)")
-    if 'n_clusters' in best_clustering:
-        print(f"Number of Clusters:  {best_clustering['n_clusters']}")
-
-    print("\nTop 5 Clustering Models:")
-    top_clustering = clustering_results.head(5)[['Model', 'Config', 'Silhouette', 'Davies_Bouldin']]
-    for idx, row in top_clustering.iterrows():
-        print(f"{row['Model']:15s} | {row['Config']:30s} | Sil: {row['Silhouette']:.4f} | DB: {row['Davies_Bouldin']:.4f}")
-
-    print("[BEST DIMENSIONALITY REDUCTION - By Reconstruction Error]")
-
-    reduction_results = results_df[results_df['Model'].isin(['PCA', 'ICA'])].copy()
-    reduction_results = reduction_results.sort_values('Reconstruction_MSE', ascending=True)
-    best_reduction = reduction_results.iloc[0]
-
-    print(f"\n{best_reduction['Model']} - {best_reduction['Config']}")
-    print(f"\nReconstruction MSE:  {best_reduction['Reconstruction_MSE']:.6f} (lower is better)")
-    if 'Variance_Explained' in best_reduction and best_reduction['Variance_Explained']:
-        print(f"Variance Explained:  {best_reduction['Variance_Explained']:.2%}")
-
-    print("\nTop 5 Dimensionality Reduction Models:")
-    top_reduction = reduction_results.head(5)[['Model', 'Config', 'Reconstruction_MSE']]
-    for idx, row in top_reduction.iterrows():
-        var_str = f" | Var: {results_df.loc[idx, 'Variance_Explained']:.2%}" if 'Variance_Explained' in results_df.columns and pd.notna(
-            results_df.loc[idx, 'Variance_Explained']) else ""
-        print(f"{row['Model']:10s} | {row['Config']:25s} | MSE: {row['Reconstruction_MSE']:.6f}{var_str}")
-
-    print(f"\nBEST MODELS:")
-    print(f"{best_clustering['Model']} with {best_clustering['Config']}")
-    print(f"{best_reduction['Model']} with {best_reduction['Config']}")
 
 if  __name__ == "__main__":
     kmeans_clustering()
@@ -277,4 +233,3 @@ if  __name__ == "__main__":
     dbscan_clustering()
     principal_component_analysis()
     independent_component_analysis()
-    main()
