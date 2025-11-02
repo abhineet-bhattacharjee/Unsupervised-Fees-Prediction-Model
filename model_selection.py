@@ -79,7 +79,7 @@ def hierarchical_clustering():
                 'Time_sec': round(elapsed, 3)
             })
 
-            print(f"  n={n_clusters}, {linkage}: Silhouette={silhouette:.4f}, DB={davies_bouldin:.4f}")
+            print(f"n={n_clusters}, {linkage}: Silhouette={silhouette:.4f}, DB={davies_bouldin:.4f}")
 
 def gaussian_mixture_model():
     covariance_types = ['full', 'tied', 'diag', 'spherical']
@@ -126,10 +126,10 @@ def gaussian_mixture_model():
                 })
 
                 print(
-                    f"  n={n_components}, {cov_type}: BIC={bic:.2f}, AIC={aic:.2f}, Sil={silhouette:.4f if not np.isnan(silhouette) else 'N/A'}")
+                    f"n={n_components}, {cov_type}: BIC={bic:.2f}, AIC={aic:.2f}, Sil={silhouette:.4f if not np.isnan(silhouette) else 'N/A'}")
 
             except Exception as e:
-                print(f"  ⚠ GMM n={n_components}, cov={cov_type} failed: {str(e)[:50]}")
+                print(f"GMM n={n_components}, cov={cov_type} failed: {str(e)[:50]}")
 
 def dbscan_clustering():
     eps_values = [0.5, 1.0, 1.5, 2.0, 2.5]
@@ -178,7 +178,7 @@ def dbscan_clustering():
             })
 
             sil_str = f"{silhouette:.4f}" if not np.isnan(silhouette) else "N/A"
-            print(f"  eps={eps}, min={min_samples}: clusters={n_clusters}, noise={n_noise}, Sil={sil_str}")
+            print(f"eps={eps}, min={min_samples}: clusters={n_clusters}, noise={n_noise}, Sil={sil_str}")
 
 def principal_component_analysis():
     for n_components in [2, 3, 4, 5, 6]:
@@ -206,5 +206,6 @@ def principal_component_analysis():
             'Time_sec': round(elapsed, 3)
         })
 
-        print(
-            f"  n={n_components}: MSE={reconstruction_mse:.6f}, Variance={explained_variance:.2%}, Time={elapsed:.3f}s")
+        print(f"n={n_components}: MSE={reconstruction_mse:.6f}, Variance={explained_variance:.2%}, Time={elapsed:.3f}s")
+
+def independent_component_analysis():
